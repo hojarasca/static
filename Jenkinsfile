@@ -1,13 +1,9 @@
 pipeline {
     agent any
   stages {
-    stage('build') {
-      steps {
-        sh 'echo "Hello World"'
-        sh '''
-          echo "Multiline shell steps works too"
-          ls -lah
-        '''
+    stage('Upload to aws') {
+      withAWS(region:'eu-west-1', credentials: 'ci-cd-entity') {
+        s3Upload(bucket:'jenkins-ci-test-hojarasca', path:'', includePathPattern:'*.html', workingDir:'.')
       }
     }
   }
